@@ -7,13 +7,20 @@
 package ventas;
 
 import busqueda.frmBuscarCliente;
+import busqueda.frmBuscarProducto;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author office depot
  */
 public class frmRealizarVenta extends javax.swing.JInternalFrame {
-
+    Connection conexion;
+     DefaultTableModel model;
     /**
      * Creates new form frmRealizarVenta
      */
@@ -21,8 +28,29 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
         initComponents();
         setClosable(true);
         setMaximizable(true);
+        
+        inicializaBaseDeDatos();
+        
+        model = new DefaultTableModel();
+        tablaVentas.setModel(model);
+        
+        model.addColumn("id_medicamento");
+        model.addColumn("nombre");
+        model.addColumn("precio");
+        model.addColumn("cantidad");
+        model.addColumn("total");
     }
 
+     public void inicializaBaseDeDatos(){
+        try{
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            conexion = DriverManager.
+                    getConnection("jdbc:mysql://"
+                    + "localhost/farmacia","root","");
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,19 +63,18 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         txtFolio = new javax.swing.JTextField();
         txtCliente = new javax.swing.JTextField();
         txtProducto = new javax.swing.JTextField();
-        txtPrecio = new javax.swing.JTextField();
-        txtCantidad = new javax.swing.JTextField();
         txtTotal = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVentas = new javax.swing.JTable();
-        btnBuscar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnBuscarCliente = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnBuscarProducto = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -57,11 +84,7 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Producto:");
 
-        jLabel4.setText("Cantidad:");
-
         jLabel5.setText("Total a pagar:");
-
-        jLabel6.setText("Precio:");
 
         tablaVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -76,16 +99,31 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tablaVentas);
 
-        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar (2).png"))); // NOI18N
-        btnBuscar.setToolTipText("Buscar cliente");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar (2).png"))); // NOI18N
+        btnBuscarCliente.setToolTipText("Buscar cliente");
+        btnBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+                btnBuscarClienteActionPerformed(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar-nuevo.png"))); // NOI18N
-        jButton2.setToolTipText("agregar nuevo");
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar-nuevo.png"))); // NOI18N
+        btnAgregar.setToolTipText("agregar nuevo");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+
+        btnBuscarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/medicamento.png"))); // NOI18N
+        btnBuscarProducto.setToolTipText("Buscar producto");
+        btnBuscarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarProductoActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Cantidad");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,27 +141,24 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
                         .addComponent(txtFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(txtProducto))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtCantidad))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                    .addComponent(txtProducto)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnAgregar)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -146,35 +181,83 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnAgregar)
+                            .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(33, 33, 33)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(212, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
     frmBuscarCliente BuscarCliente= new frmBuscarCliente(txtCliente);
         BuscarCliente.setVisible(true);        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    }//GEN-LAST:event_btnBuscarClienteActionPerformed
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+ try{
+            PreparedStatement consulta = conexion.prepareStatement(""
+                    + "SELECT * FROM medicamento WHERE status=1 AND id_medicamento=?");
+            consulta.setString(1, txtProducto.getText());
+            ResultSet rs = consulta.executeQuery();            
+            
+            rs.next();
+
+            Object[] fila = new Object[5];
+
+            fila[0]=txtProducto.getText();
+            fila[1]=rs.getString("nombre");
+            fila[2]=rs.getString("precio");
+            fila[3]=txtCantidad.getText();
+            double precio = Double.parseDouble(rs.getString("precio"));
+            int cantidad = Integer.parseInt(txtCantidad.getText());
+            double total = precio * cantidad;
+            fila[4]=""+total;
+
+            model.addRow(fila);        
+            limpiaCampos();
+            sumarventa();
+        }catch(Exception e){
+            e.printStackTrace();
+        }                  // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
+      frmBuscarProducto BuscarProducto= new frmBuscarProducto(txtProducto);
+        BuscarProducto.setVisible(true);    // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarProductoActionPerformed
+
+     public void limpiaCampos(){
+        txtProducto.setText("");
+        txtCantidad.setText("");
+       
+    }
+     
+    public void sumarventa(){
+        double suma=0;
+        for(int i=0;i<tablaVentas.getRowCount();i++){
+            suma+=Double.parseDouble(tablaVentas.getValueAt(i, 4).toString());
+            
+        }
+        txtTotal.setText(""+suma);
+    }
     /**
      * @param args the command line arguments
      */
@@ -211,20 +294,19 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnBuscarCliente;
+    private javax.swing.JButton btnBuscarProducto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaVentas;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCliente;
     private javax.swing.JTextField txtFolio;
-    private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtProducto;
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
