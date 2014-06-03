@@ -212,7 +212,7 @@ try{
          PreparedStatement consulta = conexion.prepareStatement(""
                     + "INSERT INTO salida (fecha_alta, id_usuario,cantidad) VALUES(NOW(),?,?)");
             consulta.setInt(1, config.id_usuario);
-            consulta.setString(2, txtUsuario.getText());
+            consulta.setString(2, txtCantidad.getText());
             //consulta.setString(3, "0");
             consulta.executeUpdate();  
              
@@ -222,20 +222,51 @@ try{
             int id_salida= rs.getInt("id");
             for(int i=0;i<tablaSalida.getRowCount();i++){ 
              
-                  int id_producto= Integer.parseInt(tablaSalida.getValueAt(i, 0).toString());
-                  int cantidad= Integer.parseInt(tablaSalida.getValueAt(i, 2).toString());
+                int id_producto= Integer.parseInt(tablaSalida.getValueAt(i, 0).toString());
+                int cantidad= Integer.parseInt(tablaSalida.getValueAt(i, 2).toString());
                 //  double precio= Double.parseDouble(tablaSalida.getValueAt(i, 2).toString());
-                 // double total= Double.parseDouble(tablaSalida.getValueAt(i, 4).toString());
-                  
-                  consulta=conexion.prepareStatement(""
-                          +"INSERT INTO detalle_salida (id_salida,id_producto,cantidad) VALUES (?,?,?)" );
-              consulta.setInt(1, id_salida);
-               consulta.setInt(2, id_producto);
+                // double total= Double.parseDouble(tablaSalida.getValueAt(i, 4).toString());
+
+                
+                consulta=conexion.prepareStatement(""
+                        +"INSERT INTO detalle_salida (id_salida,id_producto,cantidad) VALUES (?,?,?)" );
+                consulta.setInt(1, id_salida);
+                consulta.setInt(2, id_producto);
                 consulta.setInt(3, cantidad);
-                 //consulta.setDouble(4, precio);
-                   // consulta.setDouble(5, total);
+                
+                
+                //consulta.setDouble(4, precio);
+                 // consulta.setDouble(5, total);
+                consulta.executeUpdate(); 
+
+                consulta = conexion.prepareStatement("SELECT * FROM medicamento WHERE id_medicamento=?");
+                consulta.setInt(1, id_producto);            
+                ResultSet rs2 = consulta.executeQuery();    
+
+                if (rs2.next()){
+                    int cantidad_medicamentos=rs2.getInt("cantidad");
+                    cantidad_medicamentos = cantidad_medicamentos + cantidad;                        
+                    consulta = conexion.prepareStatement("UPDATE medicamento SET cantidad=? WHERE id_medicamento = ?");
+                    consulta.setInt(1, cantidad_medicamentos);
+                    consulta.setInt(2, id_producto);    
+
                     consulta.executeUpdate(); 
-                    
+                }            
+                
+                consulta = conexion.prepareStatement("SELECT * FROM bodega WHERE id_medicamento=?");
+                consulta.setInt(1, id_producto);            
+                ResultSet rs3 = consulta.executeQuery();    
+
+                if (rs3.next()){
+                    int cantidad_bodega=rs3.getInt("cantidad");
+                    cantidad_bodega = cantidad_bodega - cantidad;                        
+                    consulta = conexion.prepareStatement("UPDATE bodega SET cantidad=? WHERE id_medicamento = ?");
+                    consulta.setInt(1, cantidad_bodega);
+                    consulta.setInt(2, id_producto);    
+
+                    consulta.executeUpdate(); 
+                }                     
+                
                   
             }
               JOptionPane.showMessageDialog(null, "Se guardo la venta");
