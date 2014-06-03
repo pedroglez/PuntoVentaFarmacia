@@ -142,7 +142,7 @@ public void llenaTablaMedicamentos() {
                                 .addGap(26, 26, 26)
                                 .addComponent(jLabel1))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(57, 57, 57)
+                                .addGap(66, 66, 66)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel2)
@@ -150,12 +150,12 @@ public void llenaTablaMedicamentos() {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNombre_medicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(148, 148, 148)
-                                        .addComponent(btnGuardar)))))
-                        .addGap(0, 345, Short.MAX_VALUE))
+                                        .addComponent(btnGuardar))
+                                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 336, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,13 +190,13 @@ public void llenaTablaMedicamentos() {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                .addGap(44, 44, 44)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(208, 208, 208))
         );
@@ -207,9 +207,9 @@ public void llenaTablaMedicamentos() {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
      String nombre = txtNombre_medicamento.getText();
         String precio = txtPrecio.getText();
+        // String cantidad = txtCantidad.getText();
         
-        
-        if (nombre.length() == 0 || precio.length() == 0)
+        if (nombre.length() == 0 || precio.length() == 0 )
         {
                 JOptionPane.showMessageDialog(null, "Debes llenar todos los campos para registrar.");
                 return;
@@ -219,7 +219,7 @@ public void llenaTablaMedicamentos() {
                     + "INSERT INTO medicamento(nombre,precio) VALUES (?,?)");                  
            consulta.setString(1, nombre);
            consulta.setString(2, precio);   
-           
+          // consulta.setString(3, cantidad);
            
            consulta.executeUpdate();
            
@@ -269,6 +269,7 @@ try{
         txtId.setText("Nuevo");
         txtNombre_medicamento.setText("");
         txtPrecio.setText("");
+        //txtCantidad.setText("");
         
     }
     /**

@@ -8,10 +8,12 @@ package ventas;
 
 import busqueda.frmBuscarCliente;
 import busqueda.frmBuscarProducto;
+import configuracion.config;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -75,6 +77,7 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
         btnBuscarProducto = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtCantidad = new javax.swing.JTextField();
+        btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -125,6 +128,13 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Cantidad");
 
+        btnGuardar.setText("guardar venta");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -158,7 +168,9 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
                             .addComponent(btnBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAgregar)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAgregar)
+                            .addComponent(btnGuardar))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -185,7 +197,6 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
                             .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -193,14 +204,17 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnGuardar)
+                        .addComponent(btnBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(212, Short.MAX_VALUE))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
 
         pack();
@@ -230,7 +244,7 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
             int cantidad = Integer.parseInt(txtCantidad.getText());
             double total = precio * cantidad;
             fila[4]=""+total;
-
+            
             model.addRow(fila);        
             limpiaCampos();
             sumarventa();
@@ -243,6 +257,46 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
       frmBuscarProducto BuscarProducto= new frmBuscarProducto(txtProducto);
         BuscarProducto.setVisible(true);    // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarProductoActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+     
+    try{
+         PreparedStatement consulta = conexion.prepareStatement(""
+                    + "INSERT INTO ventas(fecha_alta, id_usuario, id_cliente,total) VALUES(NOW(),?,?,?)");
+            consulta.setInt(1, config.id_usuario);
+            consulta.setString(2, txtCliente.getText());
+            consulta.setString(3, "0");
+            consulta.executeUpdate();  
+        
+            consulta = conexion.prepareStatement("SELECT last_insert_id() as id FROM ventas");
+           ResultSet rs = consulta.executeQuery();    
+            if (rs.next()){
+            int id_venta= rs.getInt("id");
+            for(int i=0;i<tablaVentas.getRowCount();i++){ 
+             
+                  int id_producto= Integer.parseInt(tablaVentas.getValueAt(i, 0).toString());
+                  int cantidad= Integer.parseInt(tablaVentas.getValueAt(i, 3).toString());
+                  double precio= Double.parseDouble(tablaVentas.getValueAt(i, 2).toString());
+                  double total= Double.parseDouble(tablaVentas.getValueAt(i, 4).toString());
+                  
+                  consulta=conexion.prepareStatement(""
+                          +"INSERT INTO detalle_venta(id_venta,id_producto,cantidad,precio,total) VALUES (?,?,?,?,?)" );
+              consulta.setInt(1, id_venta);
+               consulta.setInt(2, id_producto);
+                consulta.setInt(3, cantidad);
+                 consulta.setDouble(4, precio);
+                    consulta.setDouble(5, total);
+                    consulta.executeUpdate(); 
+                    
+                  
+            }
+              JOptionPane.showMessageDialog(null, "Se guardo la venta");
+            }
+    }catch(Exception e){
+         e.printStackTrace();
+        }  
+    
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
      public void limpiaCampos(){
         txtProducto.setText("");
@@ -297,6 +351,7 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnBuscarProducto;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

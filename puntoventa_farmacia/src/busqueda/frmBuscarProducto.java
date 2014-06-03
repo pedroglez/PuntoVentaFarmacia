@@ -36,6 +36,7 @@ public class frmBuscarProducto extends javax.swing.JFrame {
         this.txtIdProducto=txtIdProducto;
     }
     
+    
     public void inicializaBaseDeDatos(){
         try{
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
@@ -157,9 +158,9 @@ public class frmBuscarProducto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSeleccionar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(184, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
 
         pack();
@@ -168,6 +169,7 @@ public class frmBuscarProducto extends javax.swing.JFrame {
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
 int id = (int) tablaProductos.getValueAt(tablaProductos.getSelectedRow() , 0);
         txtIdProducto.setText(""+id);
+        
         this.dispose();
         
            // TODO add your handling code here:
@@ -188,8 +190,8 @@ try{
             consulta.setString( 1, "%"+txtBuscar.getText()+"%");
             */
             PreparedStatement consulta = conexion.prepareStatement(""
-                + "SELECT id_medicamento, nombre FROM medicamento WHERE status=1 AND nombre LIKE ?");
-            consulta.setString( 1,"'"+txtBuscar.getText()+"'");
+                + "SELECT * FROM medicamento WHERE status=1 AND nombre LIKE ?");
+            consulta.setString( 1,"%"+txtBuscar.getText()+"%");
             ResultSet rs = consulta.executeQuery();
 
             ResultSetMetaData rsMd = rs.getMetaData();

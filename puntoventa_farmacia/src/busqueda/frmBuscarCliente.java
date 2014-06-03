@@ -105,6 +105,11 @@ public class frmBuscarCliente extends javax.swing.JFrame {
                 txtBuscarActionPerformed(evt);
             }
         });
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
 
         btnSeleccionar.setText("Seleccionar");
         btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
@@ -162,15 +167,25 @@ public class frmBuscarCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+       // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        int id = (int) tablaClientes.getValueAt(tablaClientes.getSelectedRow() , 0);
+        txtIdCliente.setText(""+id);
+        this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
 try{            
             DefaultTableModel model = new DefaultTableModel();
             tablaClientes.setModel(model);
              
-            /*
-            PreparedStatement consulta = conexion.prepareStatement(""
-                    + "SELECT * FROM usuarios WHERE status=1 AND nombre LIKE ?");                              
+           
+           /* PreparedStatement consulta = conexion.prepareStatement(""
+                    + "SELECT * FROM clientes WHERE status=1 AND nombre LIKE ?");                              
             consulta.setString( 1, "%"+txtBuscar.getText()+"%");
-            */
+          */
             PreparedStatement consulta = conexion.prepareStatement(""
                     + "SELECT id_cliente, nombre, apellido_paterno, apellido_materno FROM clientes WHERE status=1 AND "
                     + "MATCH(nombre,apellido_paterno,apellido_materno) AGAINST (?)");                              
@@ -195,14 +210,8 @@ try{
         }catch(Exception e){
             e.printStackTrace();
                     
-        }        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscarActionPerformed
-
-    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
-        int id = (int) tablaClientes.getValueAt(tablaClientes.getSelectedRow() , 0);
-        txtIdCliente.setText(""+id);
-        this.dispose();        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSeleccionarActionPerformed
+        }         // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarKeyReleased
 
     /**
      * @param args the command line arguments

@@ -7,8 +7,11 @@
 package puntoventa;
 
 import Catalogos.frmCatalogoCliente;
+import Catalogos.frmCatalogoEntrada;
+
 import Catalogos.frmCatalogoMedicamentos;
 import Catalogos.frmCatalogoProveedor;
+import Catalogos.frmCatalogoSalida;
 import informacion.frmAcercaDe;
 import javax.swing.JFrame;
 
@@ -44,9 +47,11 @@ public class MDIPrincipal extends javax.swing.JFrame {
         itemUsuario = new javax.swing.JMenuItem();
         itemCliente = new javax.swing.JMenuItem();
         itemMedicamentos = new javax.swing.JMenuItem();
-        menuVentas = new javax.swing.JMenu();
         itemProveedor = new javax.swing.JMenuItem();
+        menuVentas = new javax.swing.JMenu();
         itemVenta = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -91,17 +96,17 @@ public class MDIPrincipal extends javax.swing.JFrame {
         });
         menuCatalogo.add(itemMedicamentos);
 
-        jMenuBar1.add(menuCatalogo);
-
-        menuVentas.setText("Ventas");
-
         itemProveedor.setText("Proveedor");
         itemProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemProveedorActionPerformed(evt);
             }
         });
-        menuVentas.add(itemProveedor);
+        menuCatalogo.add(itemProveedor);
+
+        jMenuBar1.add(menuCatalogo);
+
+        menuVentas.setText("Ventas");
 
         itemVenta.setText("Realizar venta");
         itemVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +115,22 @@ public class MDIPrincipal extends javax.swing.JFrame {
             }
         });
         menuVentas.add(itemVenta);
+
+        jMenuItem2.setText("Entradas");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        menuVentas.add(jMenuItem2);
+
+        jMenuItem3.setText("Salidas");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        menuVentas.add(jMenuItem3);
 
         jMenuBar1.add(menuVentas);
 
@@ -186,6 +207,18 @@ public class MDIPrincipal extends javax.swing.JFrame {
      RealizarVenta.setVisible(true);// TODO add your handling code here:
     }//GEN-LAST:event_itemVentaActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        frmCatalogoEntrada CatalogoEntrada = new frmCatalogoEntrada();
+     desktopPane.add(CatalogoEntrada);   
+     CatalogoEntrada.setVisible(true);// TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+      frmCatalogoSalida CatalogoSalida = new frmCatalogoSalida();
+     desktopPane.add(CatalogoSalida);   
+     CatalogoSalida.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -230,6 +263,8 @@ public class MDIPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemVenta;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuCatalogo;
     private javax.swing.JMenu menuVentas;

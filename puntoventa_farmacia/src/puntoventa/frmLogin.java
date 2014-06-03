@@ -7,6 +7,7 @@
 package puntoventa;
 
 
+import configuracion.config;
 import java.sql.DriverManager;
 import java.sql.*;
 import javax.swing.JFrame;
@@ -120,9 +121,11 @@ public class frmLogin extends javax.swing.JFrame {
             ResultSet rs = consulta.executeQuery();
             if(rs.next()){
                 JOptionPane.showMessageDialog(null, "Bienvenido al Sistema");
+                config.id_usuario = rs.getInt("id_usuario");
                 MDIPrincipal mdiPrincipal = new MDIPrincipal();
                 mdiPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 mdiPrincipal.setVisible(true);
+                frmLogin.this.dispose();
                 
             }else{
                 JOptionPane.showMessageDialog(null, "Usuario no Existe");
