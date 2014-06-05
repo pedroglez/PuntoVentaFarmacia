@@ -56,7 +56,6 @@ Connection conexion;
             PreparedStatement consulta = conexion.prepareStatement(""
                     + "SELECT id_usuario, CONCAT(nombre,' ',apellido_paterno,' ',apellido_materno) "
                     + "AS nombre FROM usuarios WHERE status=1");                  
-            
             ResultSet rs = consulta.executeQuery();
             
             ResultSetMetaData rsMd = rs.getMetaData();

@@ -203,6 +203,8 @@ try{
            ResultSet rs = consulta.executeQuery();    
             if (rs.next()){
             int id_salida= rs.getInt("id");
+            String productoserror="";
+            boolean error=false;
             for(int i=0;i<tablaSalida.getRowCount();i++){ 
              
                 int id_producto= Integer.parseInt(tablaSalida.getValueAt(i, 0).toString());
@@ -221,20 +223,6 @@ try{
                 //consulta.setDouble(4, precio);
                  // consulta.setDouble(5, total);
                 consulta.executeUpdate(); 
-
-                consulta = conexion.prepareStatement("SELECT * FROM medicamento WHERE id_medicamento=?");
-                consulta.setInt(1, id_producto);            
-                ResultSet rs2 = consulta.executeQuery();    
-
-                if (rs2.next()){
-                    int cantidad_medicamentos=rs2.getInt("cantidad");
-                    cantidad_medicamentos = cantidad_medicamentos + cantidad;                        
-                    consulta = conexion.prepareStatement("UPDATE medicamento SET cantidad=? WHERE id_medicamento = ?");
-                    consulta.setInt(1, cantidad_medicamentos);
-                    consulta.setInt(2, id_producto);    
-
-                    consulta.executeUpdate(); 
-                }            
                 
                 consulta = conexion.prepareStatement("SELECT * FROM bodega WHERE id_medicamento=?");
                 consulta.setInt(1, id_producto);            
@@ -242,17 +230,44 @@ try{
 
                 if (rs3.next()){
                     int cantidad_bodega=rs3.getInt("cantidad");
-                    cantidad_bodega = cantidad_bodega - cantidad;                        
-                    consulta = conexion.prepareStatement("UPDATE bodega SET cantidad=? WHERE id_medicamento = ?");
-                    consulta.setInt(1, cantidad_bodega);
-                    consulta.setInt(2, id_producto);    
+                    cantidad_bodega = cantidad_bodega - cantidad;               
+                    if (cantidad_bodega-cantidad>0){
+                        consulta = conexion.prepareStatement("UPDATE bodega SET cantidad=? WHERE id_medicamento = ?");
+                        consulta.setInt(1, cantidad_bodega);
+                        consulta.setInt(2, id_producto);    
 
-                    consulta.executeUpdate(); 
-                }                     
+                        consulta.executeUpdate(); 
+                        
+                        consulta = conexion.prepareStatement("SELECT * FROM medicamento WHERE id_medicamento=?");
+                        consulta.setInt(1, id_producto);            
+                        ResultSet rs2 = consulta.executeQuery();    
+
+                        if (rs2.next()){
+                            int cantidad_medicamentos=rs2.getInt("cantidad");
+                            cantidad_medicamentos = cantidad_medicamentos + cantidad;                        
+                            consulta = conexion.prepareStatement("UPDATE medicamento SET cantidad=? WHERE id_medicamento = ?");
+                            consulta.setInt(1, cantidad_medicamentos);
+                            consulta.setInt(2, id_producto);    
+
+                            consulta.executeUpdate(); 
+                        }        
+                    }else{
+                       error=true;
+                       productoserror+="producto:"+rs3.getInt("id_medicamento")+"\n";
+                    }    
+                }   
+
+                  
+                                  
                 
                   
             }
-              JOptionPane.showMessageDialog(null, "Se guardo la venta");
+              if(error){
+                  JOptionPane.showMessageDialog(null, "Se guardo la venta con los siguientes errores\n"+productoserror);
+              }else{
+                  JOptionPane.showMessageDialog(null, "Se guardo la venta correctamente");
+              }
+                  
             }
     }catch(Exception e){
          e.printStackTrace();
