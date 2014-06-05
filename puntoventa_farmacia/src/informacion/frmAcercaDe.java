@@ -17,8 +17,9 @@ public class frmAcercaDe extends javax.swing.JInternalFrame {
      */
     public frmAcercaDe() {
         initComponents();
-        setClosable(true);
+        
         setMaximizable(true);
+        setClosable(true);
     }
 
     /**

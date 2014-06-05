@@ -100,6 +100,11 @@ Connection conexion;
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Tabla de Proveedores");
 
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscarKeyReleased(evt);
@@ -181,7 +186,7 @@ try{
             */
             PreparedStatement consulta = conexion.prepareStatement(""
                 + "SELECT id_proveedor, nombre_proveedor FROM proveedor WHERE status=1 AND nombre_proveedor LIKE ?");
-            consulta.setString( 1,"'"+txtBuscar.getText()+"'");
+            consulta.setString( 1,"%"+txtBuscar.getText()+"%");
             ResultSet rs = consulta.executeQuery();
 
             ResultSetMetaData rsMd = rs.getMetaData();
@@ -204,6 +209,10 @@ try{
 
         }            // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarKeyReleased
+
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
 
     /**
      * @param args the command line arguments

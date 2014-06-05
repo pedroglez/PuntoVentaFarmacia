@@ -42,6 +42,9 @@ public class MDIPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuCatalogo = new javax.swing.JMenu();
         itemUsuario = new javax.swing.JMenuItem();
@@ -50,6 +53,7 @@ public class MDIPrincipal extends javax.swing.JFrame {
         itemProveedor = new javax.swing.JMenuItem();
         menuVentas = new javax.swing.JMenu();
         itemVenta = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
@@ -58,17 +62,17 @@ public class MDIPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         desktopPane.setBackground(new java.awt.Color(204, 204, 255));
+        desktopPane.setLayout(null);
+        desktopPane.add(jLabel2);
+        jLabel2.setBounds(0, 0, 0, 0);
 
-        javax.swing.GroupLayout desktopPaneLayout = new javax.swing.GroupLayout(desktopPane);
-        desktopPane.setLayout(desktopPaneLayout);
-        desktopPaneLayout.setHorizontalGroup(
-            desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        desktopPaneLayout.setVerticalGroup(
-            desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
-        );
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/sistem.png"))); // NOI18N
+        desktopPane.add(jLabel1);
+        jLabel1.setBounds(120, 30, 470, 70);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cruz-verde.png"))); // NOI18N
+        desktopPane.add(jLabel3);
+        jLabel3.setBounds(10, 10, 120, 117);
 
         menuCatalogo.setText("Catalogo");
 
@@ -116,13 +120,17 @@ public class MDIPrincipal extends javax.swing.JFrame {
         });
         menuVentas.add(itemVenta);
 
+        jMenuBar1.add(menuVentas);
+
+        jMenu1.setText("Bodega");
+
         jMenuItem2.setText("Entradas");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        menuVentas.add(jMenuItem2);
+        jMenu1.add(jMenuItem2);
 
         jMenuItem3.setText("Salidas");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -130,9 +138,9 @@ public class MDIPrincipal extends javax.swing.JFrame {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        menuVentas.add(jMenuItem3);
+        jMenu1.add(jMenuItem3);
 
-        jMenuBar1.add(menuVentas);
+        jMenuBar1.add(jMenu1);
 
         menuAyuda.setText("Ayuda");
         menuAyuda.addActionListener(new java.awt.event.ActionListener() {
@@ -157,11 +165,11 @@ public class MDIPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
         );
 
         pack();
@@ -261,6 +269,10 @@ public class MDIPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemProveedor;
     private javax.swing.JMenuItem itemUsuario;
     private javax.swing.JMenuItem itemVenta;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
