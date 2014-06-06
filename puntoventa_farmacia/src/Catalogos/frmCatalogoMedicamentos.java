@@ -171,6 +171,16 @@ public void llenaTablaMedicamentos() {
            consulta.setString(1, nombre);
            consulta.setString(2, precio);   
           // consulta.setString(3, cantidad);
+           consulta.executeUpdate();
+           
+           consulta = conexion.prepareStatement("SELECT last_insert_id() as id FROM medicamento");
+           ResultSet rs = consulta.executeQuery(); 
+           rs.next();
+            int id_medicamento= rs.getInt("id");
+            
+            consulta = conexion.prepareStatement(""
+                    + "INSERT INTO bodega(id_medicamento,cantidad) VALUES (?,0)");                   
+           consulta.setInt(1, id_medicamento);
            
            consulta.executeUpdate();
            

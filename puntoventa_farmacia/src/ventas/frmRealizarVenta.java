@@ -300,8 +300,9 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
 
                 if (rs2.next()){
                     int cantidad_medicamentos=rs2.getInt("cantidad");
-                    cantidad_medicamentos = cantidad_medicamentos - cantidad;  
+                   
                     if (cantidad_medicamentos-cantidad>0){
+                    cantidad_medicamentos = cantidad_medicamentos - cantidad;  
                     consulta = conexion.prepareStatement("UPDATE medicamento SET cantidad=? WHERE id_medicamento = ?");
                     consulta.setInt(1, cantidad_medicamentos);
                     consulta.setInt(2, id_producto);    

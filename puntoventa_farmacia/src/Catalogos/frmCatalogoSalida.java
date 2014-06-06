@@ -230,8 +230,9 @@ try{
 
                 if (rs3.next()){
                     int cantidad_bodega=rs3.getInt("cantidad");
-                    cantidad_bodega = cantidad_bodega - cantidad;               
+                                  
                     if (cantidad_bodega-cantidad>0){
+                        cantidad_bodega = cantidad_bodega - cantidad;
                         consulta = conexion.prepareStatement("UPDATE bodega SET cantidad=? WHERE id_medicamento = ?");
                         consulta.setInt(1, cantidad_bodega);
                         consulta.setInt(2, id_producto);    
