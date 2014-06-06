@@ -311,10 +311,9 @@ try{
                         
                         consulta.executeUpdate(); 
                     }
-             
-             
-              JOptionPane.showMessageDialog(null, "Se guardo la venta");
+              
             }
+                JOptionPane.showMessageDialog(null, "Se guardo la venta");
           }
         }catch(Exception e){
              e.printStackTrace();

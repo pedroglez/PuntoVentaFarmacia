@@ -258,9 +258,6 @@ try{
                 }   
 
                   
-                                  
-                
-                  
             }
               if(error){
                   JOptionPane.showMessageDialog(null, "Se guardo la venta con los siguientes errores\n"+productoserror);

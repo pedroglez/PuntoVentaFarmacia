@@ -276,6 +276,8 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
            ResultSet rs = consulta.executeQuery();    
             if (rs.next()){
             int id_venta= rs.getInt("id");
+            String productoserror="";
+            boolean error=false;
             for(int i=0;i<tablaVentas.getRowCount();i++){ 
              
                   int id_producto= Integer.parseInt(tablaVentas.getValueAt(i, 0).toString());
@@ -298,16 +300,27 @@ public class frmRealizarVenta extends javax.swing.JInternalFrame {
 
                 if (rs2.next()){
                     int cantidad_medicamentos=rs2.getInt("cantidad");
-                    cantidad_medicamentos = cantidad_medicamentos - cantidad;                        
+                    cantidad_medicamentos = cantidad_medicamentos - cantidad;  
+                    if (cantidad_medicamentos-cantidad>0){
                     consulta = conexion.prepareStatement("UPDATE medicamento SET cantidad=? WHERE id_medicamento = ?");
                     consulta.setInt(1, cantidad_medicamentos);
                     consulta.setInt(2, id_producto);    
 
                     consulta.executeUpdate(); 
-                }
-                  
+                
+                 
+                    }else{
+                    error=true;
+                       productoserror+="producto:"+rs2.getInt("id_medicamento")+"\n";
+                } 
+                    } 
             }
-              JOptionPane.showMessageDialog(null, "Se guardo la venta");
+            if(error){
+                  JOptionPane.showMessageDialog(null, "Se guardo la venta con los siguientes errores\n"+productoserror);
+              }else{
+                  JOptionPane.showMessageDialog(null, "Se guardo la venta correctamente");
+              }
+              
             }
     }catch(Exception e){
          e.printStackTrace();
